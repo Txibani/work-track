@@ -1,10 +1,24 @@
 import { Component } from '@angular/core';
 
+import { Store } from '../store/store';
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    styleUrls: ['./app.component.scss'],
+    template: `
+        <h1 *ngFor="let bla of auth$ | async">
+            {{ bla?.name }}
+        </h1>
+    `
 })
 export class AppComponent {
-  title = 'work-track';
+
+    auth$ = this.store.select<any>('auth');
+
+    constructor(
+        private store: Store
+    ) {
+        this.store.set('auth', [{id: 1, name: 'Paco'}, {id: 2, name: 'Perico'}]);
+        console.log(store);
+    }
 }
