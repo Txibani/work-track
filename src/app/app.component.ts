@@ -6,9 +6,12 @@ import { Store } from '../store/store';
     selector: 'app-root',
     styleUrls: ['./app.component.scss'],
     template: `
-        <h1 *ngFor="let bla of auth$ | async">
+        <!-- <h1 *ngFor="let bla of auth$ | async">
             {{ bla?.name }}
-        </h1>
+        </h1>-->
+        <div class="wrapper">
+            <router-outlet></router-outlet>
+        </div>
     `
 })
 export class AppComponent {

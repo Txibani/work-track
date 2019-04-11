@@ -1,0 +1,92 @@
+:host ::ng-deep { // styles applies to the host components register/login only
+    .error {
+        color: #a94442;
+        background: transparent;
+        border: 1px solid #ff584c;
+        border-radius: 2px;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: 400;
+        margin: 10px 0 10px;
+    }
+    h1 {
+        margin: 0 0 25px;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+    }
+    button {
+        cursor: pointer;
+        outline: 0;
+        width: 100%;
+        border-radius: 2px;
+        border: 1px solid #f7bc4a;
+        background: #f7bc4a;
+        color: #fff;
+        padding: 10px;
+        font-size: 14px;
+        text-transform: uppercase;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            background: darken(#f7bc4a, 5%);
+            border-color: darken(#f7bc4a, 5%);
+        }
+        &:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+    }
+    a {
+      display: block;
+      text-align: center;
+      color: #5e7386;
+      font-size: 13px;
+      margin-top: 1em;
+    }
+}
+  
+.auth-form {
+    box-shadow: 0 0px 15px 2px rgba(32, 32, 32, 0.1);
+    border-radius: 20px;
+    width: 350px;
+    margin: 100px auto;
+    padding: 30px;
+    &__action {
+        margin: 10px 0 30px;
+    }
+    &__toggle {
+        border-radius: 0 0 3px 3px;
+        border-top: 1px solid #c1cedb;
+        background: #f8fafc;
+        padding: 10px;
+        margin: 0 -30px -30px;
+    }
+    label {
+        display: block;
+        margin: 0 0 1em 0;
+    }
+    input {
+        outline: 0;
+        font-size: 13px;
+        padding: 10px 15px;
+        margin: 0;
+        width: 100%;
+        background: transparent;
+        color: #525252;
+        border-bottom: 1px solid #f7bc4a;
+        border-top: 0;
+        border-right: 0;
+        border-left: 0;
+        text-align: left;
+        &::-webkit-input-placeholder {
+            color: #a0a0a0;
+        }
+        &[type=email] {
+            border-radius: 3px 3px 0 0;
+        }
+        &[type=password] {
+            border-radius: 0 0 3px 3px;
+            margin: -1px 0 0;
+        }
+    }
+}

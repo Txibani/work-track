@@ -1,29 +1,49 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
-import { Store } from '../store/store';
+// shared modules
+import { SharedModule } from './shared/shared.module';
 
-// containers
-import { LoginComponent } from './login/container/login/login.component';
-import { RegisterComponent } from './register/container/register/register.component';
+// third-party modules
+import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
+// Firebase config
+export const firebaseConfig: FirebaseAppConfig = {
+
+};
+
+// routes - dictates the actual routes
+export const ROUTES: Routes = [{
+    path: '',
+    children: [
+        {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'login'
+        },
+        {
+            path: 'login',
+            loadChildren: './login/login.module#LoginModule' // this will lazy load by default
+        },
+        {
+            path: 'register',
+            loadChildren: './register/register.module#RegisterModule' // this will lazy load by default
+        }
+    ]
+}];
 
 @NgModule({
-    declarations: [
-        LoginComponent,
-        RegisterComponent
-    ],
-    providers: [
-        Store
-    ],
     imports: [
         CommonModule,
-        HttpClientModule
-    ],
-    exports: [
-        LoginComponent,
-        RegisterComponent
+        RouterModule.forChild(ROUTES),
+        SharedModule,
+        AngularFireModule.initializeApp(firebaseConfig),
+        AngularFireAuthModule,
+        AngularFireDatabaseModule,
+        SharedModule
     ]
 })
 export class AuthModule {}
