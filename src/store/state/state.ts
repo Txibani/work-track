@@ -1,3 +1,3 @@
 export interface State {
-    auth: any;
+    user: any;
 }

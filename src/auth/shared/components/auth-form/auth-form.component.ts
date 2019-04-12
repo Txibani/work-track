@@ -1,9 +1,10 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'auth-form',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['auth-form.component.scss'],
     template: `
         <div class="auth-form">

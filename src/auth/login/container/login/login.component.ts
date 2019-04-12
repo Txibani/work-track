@@ -31,7 +31,6 @@ export class LoginComponent {
     ) {}
 
     loginEvent(event: any): void {
-        console.log(event);
         this.authService.loginUser(event.email, event.password)
             .then(result => this.router.navigate(['dashboard']))
             .catch(error => this.error = error);

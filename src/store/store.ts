@@ -3,11 +3,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { State } from './state/state';
 
+import { User } from '../auth/shared/services/auth/auth.service';
+
 // set method to allow to set items into our store - store.set('todos', [{},{}])
 // select to get data back from store - store.select('todos')
 
+export interface State {
+    user: User;
+}
+
 const state: State = {
-    auth: undefined
+    user: undefined
 };
 
 

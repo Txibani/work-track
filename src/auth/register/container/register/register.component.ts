@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { AuthService } from '../../../shared/services/auth/auth.service';
 
 @Component({
@@ -24,13 +26,13 @@ export class RegisterComponent {
     error: {};
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
 
     registerEvent(event: any): void {
-        console.log(event);
         this.authService.createUser(event.email, event.password)
-            .then(result => console.log('wwhatt', result))
+            .then(result => this.router.navigate(['dashboard']))
             .catch(error => this.error = error);
     }
 }
