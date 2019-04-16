@@ -23,7 +23,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
                 <label>
                     <input
-                        type="text"
+                        type="password"
                         formControlName="password"
                         placeholder="Password"
                         name="password">

@@ -12,7 +12,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 // Firebase config
 
-
 // routes - dictates the actual routes
 export const ROUTES: Routes = [{
     path: '',

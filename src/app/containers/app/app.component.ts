@@ -11,14 +11,15 @@ import { Router } from '@angular/router';
     selector: 'app-root',
     styleUrls: ['./app.component.scss'],
     template: `
-        <div *ngIf="(user$ | async)?.authenticated">
+        <div *ngIf="(user$ | async)?.authenticated"
+            class="header">
             <app-header
                 (logout)="logoutUser($event)">
             </app-header>
             <app-nav>
             </app-nav>
         </div>
-        <div class="wrapper">
+        <div class="content">
             <router-outlet></router-outlet>
         </div>
     `

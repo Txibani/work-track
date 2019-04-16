@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../auth/shared/guards/auth.guard';
 
+// shared module
+import { SharedModule } from './shared/shared.module';
+
 // routes - dictates the actual routes
 export const ROUTES: Routes = [{
     path: 'dashboard',
@@ -33,6 +36,7 @@ export const ROUTES: Routes = [{
     imports: [
         CommonModule,
         RouterModule.forChild(ROUTES),
+        SharedModule,
     ]
 })
 export class DashboardModule {}

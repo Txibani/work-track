@@ -14,6 +14,7 @@ import { AppComponent } from './containers/app/app.component';
 // components
 import { AppHeaderComponent } from './components/app-header/app-header.component';
 import { AppNavComponent } from './components/app-nav/app-nav.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // routes
 export const ROUTES: Routes = [];
@@ -24,7 +25,8 @@ export const ROUTES: Routes = [];
         BrowserModule,
         AuthModule,
         DashboardModule,
-        RouterModule.forRoot(ROUTES)
+        RouterModule.forRoot(ROUTES),
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
