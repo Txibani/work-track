@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+
+import { Store } from '../../../../store/store';
+
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -12,30 +18,54 @@ import { Component } from '@angular/core';
                     Clients
                 </h1>
                 <a
-                    class="btn__add"
+                    class="button btn__add"
                     routerLink="new">
                     <img src="assets/img/add-white.svg">
                     New client
                 </a>
             </div>
-            <!--<div *ngIf="meals$ | async as meals; else loading;">
-                <div class="message" *ngIf="!meals.length">
-                    <img src="src/assets/img/face.svg">
-                    No meals, add a new meal to start
+            <div *ngIf="clients$ | async as clients; else loading;">
+                <div class="message" *ngIf="!clients.length">
+                    <img src="assets/img/face.svg">
+                    No clients, add a new client to start
                 </div>
-                <client>
-                </client>
+                <item-list
+                    *ngFor="let client of clients"
+                    [item]="client"
+                    (remove)="removeClient($event)"
+                ></item-list>
             </div>
             <ng-template #loading>
                 <div class="message">
-                    <img src="src/assets/img/loading.svg">
-                    Fetching meals...
+                    <img src="assets/img/loading.svg">
+                    Fetching clients...
                 </div>
-            </ng-template>-->
+            </ng-template>
         </div>
     `
 })
 
-export class ClientsComponent {
-    constructor() {}
+export class ClientsComponent implements OnInit, OnDestroy {
+
+    clients$: Observable<Client[]>;
+    subscription: Subscription;
+
+    constructor(
+        private clientsService: ClientsService,
+        private store: Store
+    ) {}
+
+    removeClient(item) {
+       this.clientsService.removeClient(item.$key);
+    }
+
+    ngOnInit() {
+        this.clients$ = this.store.select<Client[]>('clients');
+        this.subscription = this.clientsService.clients$.subscribe();
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
 }

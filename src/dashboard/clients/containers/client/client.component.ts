@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ClientsService } from '../../../shared/services/clients/clients.service';
 
@@ -25,12 +26,14 @@ import { ClientsService } from '../../../shared/services/clients/clients.service
 
 export class ClientComponent {
     constructor(
-        private clientsService: ClientsService
+        private clientsService: ClientsService,
+        private router: Router
     ) {}
 
     async createClient(event) {
-        console.log(event);
         await this.clientsService.addClient(event);
+        // TODO - Redirect to clients page
+        this.router.navigate(['']);
     }
 
 }

@@ -1,19 +1,23 @@
 import { distinctUntilChanged, pluck, } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { State } from './state/state';
+// import { State } from './state/state';
 
 import { User } from '../auth/shared/services/auth/auth.service';
+import { Client } from '../dashboard/shared/services/clients/clients.service';
 
 // set method to allow to set items into our store - store.set('todos', [{},{}])
 // select to get data back from store - store.select('todos')
 
 export interface State {
     user: User;
+    clients: Client[];
+    [key: string]: any;
 }
 
 const state: State = {
-    user: undefined
+    user: undefined,
+    clients: undefined
 };
 
 

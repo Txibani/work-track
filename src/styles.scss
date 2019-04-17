@@ -71,8 +71,14 @@ a {
     text-transform: uppercase;
     border-radius: 5px;
     outline: 0;
+
+    &.dark {
+        background-color: #545e6f;
+    }
+
     &:hover {
         opacity: 0.9;
         cursor: pointer;
     }
+    
 }

@@ -11,6 +11,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 // Firebase config
+export const firebaseConfig: FirebaseAppConfig = {
+
+};
 
 // routes - dictates the actual routes
 export const ROUTES: Routes = [{

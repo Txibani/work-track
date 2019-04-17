@@ -2,23 +2,56 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireDatabase } from '@angular/fire/database';
 
+import { Store } from '../../../../store/store';
+
 import { AuthService } from '../../../../auth/shared/services/auth/auth.service';
+
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+
+export interface Client {
+    name: string;
+    status: string;
+    dateFrom: Date | null;
+    dateUntil: Date | null;
+    comment: string;
+    timestamp: number;
+    $key: string;
+    $exists: () => boolean;
+}
 
 @Injectable({
     providedIn: 'root'   // this provides service in root module if 'root' selected, or any selected module
 })
 export class ClientsService {
 
+    clients$: Observable<any> = this.db.list(`clients/${this.uid}`)
+        .snapshotChanges() // https://github.com/angular/angularfire2/blob/master/docs/firestore/documents.md
+        .pipe(
+            map(changes => {
+                return changes.map(change =>
+                    ({ $key: change.payload.key, ...change.payload.val() })
+                );
+            }),
+            tap(next => this.store.set('clients', next))
+        );
+
     constructor(
         private db: AngularFireDatabase,
-        private authService: AuthService
+        private authService: AuthService,
+        private store: Store
     ) {}
 
     get uid() {
         return this.authService.user.uid;
     }
 
-    addClient(client: any) {
+    addClient(client: Client) {
         return this.db.list(`/clients/${this.uid}`).push(client);
     }
+
+    removeClient(key: string) {
+        return this.db.list(`/clients/${this.uid}`).remove(key);
+    }
+
 }

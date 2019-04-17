@@ -8,7 +8,7 @@ import { User } from '../../../auth/shared/services/auth/auth.service';
     template: `
         <div class="app-header">
             <p class="title">Work track App</p>
-            <button class="button" (click)="logoutUser()">Logout</button>
+            <button class="button dark" (click)="logoutUser()">Logout</button>
         </div>
     `
 })

@@ -25,37 +25,52 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                         formControlName="name">
                 </label>
 
-                <div class="dates">
-                    <label>
-                        <input
-                            matInput
-                            [matDatepicker]="picker"
-                            placeholder="From"
-                            formControlName="dateFrom">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </label>
-
-                    <label>
-                        <input
-                            matInput
-                            [matDatepicker]="pickerTo"
-                            placeholder="Until"
-                            formControlName="dateUntil">
-                        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerTo></mat-datepicker>
-                    </label>
-                </div>
-
                 <label>
                     <div class="select">
                         <select
                             formControlName="status">
+                            <option value="" selected="true">Choose an option</option>
                             <option value="viewing">Viewing</option>
                             <option value="confirmed">Confirmation</option>
                         </select>
                     </div>
                 </label>
+
+                <div *ngIf="form.value['status'] !== ''">
+                    <div class="dates" *ngIf="form.value['status'] === 'confirmed'; else viewing">
+                        <label>
+                            <input
+                                matInput
+                                [matDatepicker]="picker"
+                                placeholder="From"
+                                formControlName="dateFrom">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </label>
+
+                        <label>
+                            <input
+                                matInput
+                                [matDatepicker]="pickerTo"
+                                placeholder="Until"
+                                formControlName="dateUntil">
+                            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerTo></mat-datepicker>
+                        </label>
+                    </div>
+
+                    <ng-template #viewing>
+                        <label>
+                            <input
+                                matInput
+                                [matDatepicker]="pickerViewing"
+                                placeholder="Date"
+                                formControlName="dateViewing">
+                            <mat-datepicker-toggle matSuffix [for]="pickerViewing"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerViewing></mat-datepicker>
+                        </label>
+                    </ng-template>
+                </div>
 
                 <label>
                     <textarea
@@ -124,10 +139,11 @@ export class ClientFormComponent {
     client = new EventEmitter<any>();
 
     form = this.fb.group({
-        name: ['', Validators.required],
-        dateFrom: ['', Validators.required],
+        name: [''],
+        dateFrom: [''],
         dateUntil: [''],
-        status: ['', Validators.required],
+        dateViewing: [''],
+        status: [''],
         comment: ['']
     });
 
@@ -138,7 +154,9 @@ export class ClientFormComponent {
 
     createClient() {
         if (this.form.valid) {
-            // console.log(this.form.value);
+            // TODO - This needs to be a loop so it'll be apply to all dates
+            const time = this.form.controls.dateViewing.value._d.getTime();
+            this.form.controls.dateViewing.setValue(time);
             this.client.emit(this.form.value);
         }
     }
