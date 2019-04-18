@@ -7,7 +7,7 @@ import { User } from '../../../auth/shared/services/auth/auth.service';
     styleUrls: ['app-header.component.scss'],
     template: `
         <div class="app-header">
-            <p class="title">Work track App</p>
+            <p class="title">Work track App <b>BETA</b></p>
             <button class="button dark" (click)="logoutUser()">Logout</button>
         </div>
     `

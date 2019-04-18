@@ -72,6 +72,8 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "no-shadowed-variable": false,
-    "component-selector": false
+    "component-selector": false,
+    "no-unused-expression": false,
+    "forin": false
   }
 }

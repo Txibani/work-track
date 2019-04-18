@@ -6,14 +6,15 @@ import { Store } from '../../../../store/store';
 
 import { AuthService } from '../../../../auth/shared/services/auth/auth.service';
 
-import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, map, filter } from 'rxjs/operators';
 
 export interface Client {
     name: string;
     status: string;
     dateFrom: Date | null;
     dateUntil: Date | null;
+    dateViewing: Date | null;
     comment: string;
     timestamp: number;
     $key: string;
@@ -52,6 +53,17 @@ export class ClientsService {
 
     removeClient(key: string) {
         return this.db.list(`/clients/${this.uid}`).remove(key);
+    }
+
+    getClient(key: string) {
+        if (!key || key === 'new') {
+            return of({});  // emits an empty observable
+        }
+        return this.store.select<Client[]>('clients')
+            .pipe(
+                filter(Boolean),
+                map(clients => clients.find((client: Client) => client.$key === key))
+            );
     }
 
 }

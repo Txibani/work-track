@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { Client } from '../../../shared/services/clients/clients.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -23,6 +24,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                         type="text"
                         placeholder="Dog name"
                         formControlName="name">
+                        <div class="error" *ngIf="requiredName()">
+                            Dog name is required
+                        </div>
                 </label>
 
                 <label>
@@ -31,8 +35,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                             formControlName="status">
                             <option value="" selected="true">Choose an option</option>
                             <option value="viewing">Viewing</option>
-                            <option value="confirmed">Confirmation</option>
+                            <option value="confirmed">Booking</option>
                         </select>
+                        <div class="error" *ngIf="requiredStatus()">
+                            Viewing type is required
+                        </div>
                     </div>
                 </label>
 
@@ -79,21 +86,22 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                 </label>
 
 
-                <div class="meal-form__submit">
+                <div class="client-form__submit">
                     <div>
                         <button
                             type="button"
                             class="button"
+                            *ngIf="!exists"
                             (click)="createClient()">
                             Create client
                         </button>
-                        <!--<button
+                        <button
                             type="button"
                             class="button"
                             *ngIf="exists"
                             (click)="updateMeal()">
                             Save
-                        </button>-->
+                        </button>
                         <a
                             class="button button--cancel"
                             [routerLink]="['../']">
@@ -101,19 +109,19 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                         </a>
                     </div>
 
-                    <!-- <div class="meal-form__delete" *ngIf="exists">
+                    <div class="client-form__delete" *ngIf="exists">
                         <div *ngIf="toggled">
                             <p>Delete item?</p>
                             <button
                                 class="confirm"
                                 type="button"
-                                (click)="removeMeal()">
+                                (click)="removeClient()">
                                 Yes
                             </button>
                             <button
                                 class="cancel"
                                 type="button"
-                                (click)="toggle()">
+                                (click)="toggled = !toggled">
                                 No
                             </button>
                         </div>
@@ -121,10 +129,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
                         <button
                             class="button button--delete"
                             type="button"
-                            (click)="toggle()">
+                            (click)="toggled = !toggled">
                             Delete
                         </button>
-                    </div>-->
+                    </div>
 
                 </div>
 
@@ -133,31 +141,84 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
     `
 })
 
-export class ClientFormComponent {
+export class ClientFormComponent implements OnChanges {
+
+    @Input()
+    client: Client;
 
     @Output()
-    client = new EventEmitter<any>();
+    newClient = new EventEmitter<any>();
+
+    @Output()
+    deleteClient = new EventEmitter<any>();
+
+    exists = false;
+    toggled = false;
 
     form = this.fb.group({
-        name: [''],
+        name: ['', Validators.required],
+        status: ['', Validators.required],
         dateFrom: [''],
         dateUntil: [''],
         dateViewing: [''],
-        status: [''],
         comment: ['']
     });
-
 
     constructor(
         private fb: FormBuilder
     ) {}
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.client.name) {
+            this.exists = true;
+            const value = this.client;
+
+            if (this.client.dateViewing) {
+                value.dateViewing = new Date(this.client.dateViewing);
+            } else {
+                value.dateFrom = new Date(this.client.dateFrom);
+                value.dateUntil = new Date(this.client.dateUntil);
+            }
+
+            this.form.patchValue(value);
+        }
+    }
+
+    requiredName() {
+        return (
+            this.form.get('name').hasError('required')
+            && this.form.get('name').touched
+        );
+    }
+
+    requiredStatus() {
+        return (
+             this.form.get('status').hasError('required')
+            && this.form.get('status').touched
+        );
+    }
+
+    removeClient() {
+        this.deleteClient.emit(this.client);
+    }
+
     createClient() {
         if (this.form.valid) {
-            // TODO - This needs to be a loop so it'll be apply to all dates
-            const time = this.form.controls.dateViewing.value._d.getTime();
-            this.form.controls.dateViewing.setValue(time);
-            this.client.emit(this.form.value);
+
+            if (this.form.value.status === 'confirmed') {
+                this.form.controls.dateViewing.setValue('');
+                const controlTime = ['dateFrom', 'dateUntil'];
+                controlTime.forEach(control => {
+                    const time = this.form.controls[control].value._d.getTime();
+                    this.form.controls[control].setValue(time);
+                });
+            } else {
+                this.form.controls.dateFrom.setValue('');
+                this.form.controls.dateUntil.setValue('');
+                const time = this.form.controls.dateViewing.value._d.getTime();
+                this.form.controls.dateViewing.setValue(time);
+            }
+            this.newClient.emit(this.form.value);
         }
     }
 

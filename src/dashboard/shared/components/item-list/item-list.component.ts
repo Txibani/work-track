@@ -14,13 +14,29 @@ import { Client } from '../../services/clients/clients.service';
                     <span class="status"
                         [ngClass]="{
                             'confirmed': item.status === 'confirmed',
-                            'pending': item.status === 'viewing'
+                            'pending': item.status === 'viewing',
+                            'past-viewing': (item.dateViewing && item.dateViewing < today)
+                                || ( item.dateUntil && item.dateUntil < today)
                         }">
-                        {{ item.status === 'confirmed' ? 'Booking confirmed' : 'Pending viewing' }}
+                        <b
+                            *ngIf="item.dateViewing">
+                            {{ item.dateViewing > today ? 'Pending viewing' : 'Past viewing' }}
+                        </b>
+                        <b
+                            *ngIf="item.dateUntil">
+                            {{ item.dateUntil > today ? 'Booking confirmed' : 'Past booking' }}
+                        </b>
                     </span>
                 </p>
                 <p class="list-item__items">
-                    <span class="date"> {{ item.dateViewing | date }}</span>
+                    <span class="date">
+                        <b *ngIf="item.dateViewing">
+                            {{ item.dateViewing | date }}
+                        </b>
+                        <b *ngIf="item.dateUntil">
+                            {{ item.dateFrom | date }} - {{ item.dateUntil | date }}
+                        </b>
+                    </span>
                     <span class="separator">|</span>
                     <span class="comment"> {{ item.comment }}</span>
                 </p>
@@ -62,6 +78,8 @@ export class ItemListComponent {
     remove = new EventEmitter<Client>();
 
     toggled = false;
+
+    today = new Date().getTime();
 
     constructor() {}
 
