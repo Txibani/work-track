@@ -99,7 +99,7 @@ import { Client } from '../../../shared/services/clients/clients.service';
                             type="button"
                             class="button"
                             *ngIf="exists"
-                            (click)="updateMeal()">
+                            (click)="updateClient()">
                             Save
                         </button>
                         <a
@@ -152,6 +152,9 @@ export class ClientFormComponent implements OnChanges {
     @Output()
     deleteClient = new EventEmitter<any>();
 
+    @Output()
+    updatedClient = new EventEmitter<any>();
+
     exists = false;
     toggled = false;
 
@@ -198,27 +201,38 @@ export class ClientFormComponent implements OnChanges {
         );
     }
 
+    updateClient() {
+        this.updateDateValue();
+        this.updatedClient.emit({key: this.client.$key, data: this.form.value});
+    }
+
     removeClient() {
         this.deleteClient.emit(this.client);
     }
 
     createClient() {
         if (this.form.valid) {
-
-            if (this.form.value.status === 'confirmed') {
-                this.form.controls.dateViewing.setValue('');
-                const controlTime = ['dateFrom', 'dateUntil'];
-                controlTime.forEach(control => {
-                    const time = this.form.controls[control].value._d.getTime();
-                    this.form.controls[control].setValue(time);
-                });
-            } else {
-                this.form.controls.dateFrom.setValue('');
-                this.form.controls.dateUntil.setValue('');
-                const time = this.form.controls.dateViewing.value._d.getTime();
-                this.form.controls.dateViewing.setValue(time);
-            }
+            this.updateDateValue();
             this.newClient.emit(this.form.value);
+        }
+    }
+
+    updateDateValue() {
+        const controlTime = ['dateViewing', 'dateFrom', 'dateUntil'];
+
+        controlTime.forEach(control => {
+            if (this.form.controls[control].value._d) {
+                const time = this.form.controls[control].value._d.getTime();
+                this.form.controls[control].setValue(time);
+            }
+        });
+
+        if (this.form.value.status === 'confirmed') {
+            this.form.controls.dateViewing.setValue('');
+
+        } else {
+            this.form.controls.dateFrom.setValue('');
+            this.form.controls.dateUntil.setValue('');
         }
     }
 

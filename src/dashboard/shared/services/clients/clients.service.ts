@@ -66,4 +66,8 @@ export class ClientsService {
             );
     }
 
+    updateClient(key: string, client: Client) {
+        return this.db.object(`/clients/${this.uid}/${key}`).update(client);
+    }
+
 }

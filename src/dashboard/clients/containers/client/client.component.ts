@@ -21,7 +21,8 @@ import { switchMap } from 'rxjs/operators';
                 <client-form
                     [client]="client"
                     (newClient)="createClient($event)"
-                    (deleteClient)="removeClient($event)">
+                    (deleteClient)="removeClient($event)"
+                    (updatedClient)="updateClient($event)">
                 </client-form>
             </div>
             <ng-template #loading>
@@ -52,6 +53,12 @@ export class ClientComponent implements OnInit, OnDestroy {
 
     async removeClient(event) {
         await this.clientsService.removeClient(event.$key);
+        this.router.navigate(['dashboard/clients']);
+    }
+
+    async updateClient(payload) {
+        console.log(payload);
+        await this.clientsService.updateClient(payload.key, payload.data);
         this.router.navigate(['dashboard/clients']);
     }
 

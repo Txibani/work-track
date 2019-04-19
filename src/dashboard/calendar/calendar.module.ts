@@ -6,10 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './containers/calendar/calendar.component';
 
 export const ROUTES: Routes = [
-    {
-        path: 'calendar',
-        component: CalendarComponent
-    }
+    { path: '', component: CalendarComponent }
 ];
 
 @NgModule({
