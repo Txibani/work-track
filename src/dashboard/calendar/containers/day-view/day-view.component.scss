@@ -1,0 +1,25 @@
+.day-view {
+    display: flex;
+    flex: 1;
+    background-color: #f9f9f9;
+    margin: 1px;
+    min-height: 78px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-size: 20px;
+
+    & > div {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        padding: 0 10px;
+    }
+
+    &.active {
+        font-weight: bold;
+        font-size: 30px;
+        background-color: #f0f0f0;
+    }
+
+}

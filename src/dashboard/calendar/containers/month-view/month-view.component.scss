@@ -1,0 +1,27 @@
+.mont-view {
+
+    &__week {
+        display: flex;
+        justify-content: space-between;
+        min-height: 100vh; // may need to be remove
+
+        .view {
+            min-width: calc(100%/7);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+
+            &-head {
+                background-color: #545e6f;
+                padding: 1.5em 0;
+                color: #ffffff;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+
+        }
+
+    }
+
+}
