@@ -13,8 +13,8 @@ import { Client } from '../../services/clients/clients.service';
                     {{ item.name }}
                     <span class="status"
                         [ngClass]="{
-                            'confirmed': item.status === 'confirmed',
-                            'pending': item.status === 'viewing',
+                            'confirmed': item.type === 'booking',
+                            'pending': item.type === 'viewing',
                             'past-viewing': (item.dateViewing && item.dateViewing < today)
                                 || ( item.dateUntil && item.dateUntil < today)
                         }">

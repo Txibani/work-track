@@ -32,19 +32,19 @@ import { Client } from '../../../shared/services/clients/clients.service';
                 <label>
                     <div class="select">
                         <select
-                            formControlName="status">
+                            formControlName="type">
                             <option value="" selected="true">Choose an option</option>
                             <option value="viewing">Viewing</option>
-                            <option value="confirmed">Booking</option>
+                            <option value="booking">Booking</option>
                         </select>
-                        <div class="error" *ngIf="requiredStatus()">
+                        <div class="error" *ngIf="requiredType()">
                             Viewing type is required
                         </div>
                     </div>
                 </label>
 
-                <div *ngIf="form.value['status'] !== ''">
-                    <div class="dates" *ngIf="form.value['status'] === 'confirmed'; else viewing">
+                <div *ngIf="form.value['type'] !== ''">
+                    <div class="dates" *ngIf="form.value['type'] === 'booking'; else viewing">
                         <label>
                             <input
                                 matInput
@@ -160,7 +160,7 @@ export class ClientFormComponent implements OnChanges {
 
     form = this.fb.group({
         name: ['', Validators.required],
-        status: ['', Validators.required],
+        type: ['', Validators.required],
         dateFrom: [''],
         dateUntil: [''],
         dateViewing: [''],
@@ -194,10 +194,10 @@ export class ClientFormComponent implements OnChanges {
         );
     }
 
-    requiredStatus() {
+    requiredType() {
         return (
-             this.form.get('status').hasError('required')
-            && this.form.get('status').touched
+             this.form.get('type').hasError('required')
+            && this.form.get('type').touched
         );
     }
 
@@ -227,7 +227,7 @@ export class ClientFormComponent implements OnChanges {
             }
         });
 
-        if (this.form.value.status === 'confirmed') {
+        if (this.form.value.type === 'booking') {
             this.form.controls.dateViewing.setValue('');
 
         } else {

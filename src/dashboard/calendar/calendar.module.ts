@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // containers
 import { CalendarComponent } from './containers/calendar/calendar.component';
+import { CalendarViewComponent } from './containers/calendar-view/calendar-view.component';
 import { MonthViewComponent } from './containers/month-view/month-view.component';
 import { DayViewComponent } from './containers/day-view/day-view.component';
 
@@ -18,6 +19,7 @@ export const ROUTES: Routes = [
     ],
     declarations: [
         CalendarComponent,
+        CalendarViewComponent,
         MonthViewComponent,
         DayViewComponent
     ]

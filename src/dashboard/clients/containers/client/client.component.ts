@@ -17,7 +17,7 @@ import { switchMap } from 'rxjs/operators';
                     <span>Dog</span>
                 </h1>
             </div>
-            <div *ngIf="$client | async as client; else loading">
+            <div *ngIf="client$ | async as client; else loading">
                 <client-form
                     [client]="client"
                     (newClient)="createClient($event)"
@@ -37,7 +37,7 @@ import { switchMap } from 'rxjs/operators';
 
 export class ClientComponent implements OnInit, OnDestroy {
 
-    $client: Observable<Client>;
+    client$: Observable<Client>;
     subscription: Subscription;
 
     constructor(
@@ -57,14 +57,13 @@ export class ClientComponent implements OnInit, OnDestroy {
     }
 
     async updateClient(payload) {
-        console.log(payload);
         await this.clientsService.updateClient(payload.key, payload.data);
         this.router.navigate(['dashboard/clients']);
     }
 
     ngOnInit() {
         this.subscription = this.clientsService.clients$.subscribe();
-        this.$client = this.route.params
+        this.client$ = this.route.params
             .pipe(
                 switchMap(param => this.clientsService.getClient(param.id)));
     }

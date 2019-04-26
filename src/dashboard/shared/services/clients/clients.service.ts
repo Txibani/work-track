@@ -11,7 +11,7 @@ import { tap, map, filter } from 'rxjs/operators';
 
 export interface Client {
     name: string;
-    status: string;
+    type: string;
     dateFrom: Date | null;
     dateUntil: Date | null;
     dateViewing: Date | null;
@@ -47,12 +47,12 @@ export class ClientsService {
         return this.authService.user.uid;
     }
 
-    addClient(client: Client) {
-        return this.db.list(`/clients/${this.uid}`).push(client);
-    }
-
-    removeClient(key: string) {
-        return this.db.list(`/clients/${this.uid}`).remove(key);
+    getViewingClients() {
+        return this.store.select<Client[]>('clients')
+            .pipe(
+                filter(Boolean),
+                map(clients => clients.filter((client: Client) => client.type === 'viewing'))
+            );
     }
 
     getClient(key: string) {
@@ -64,6 +64,14 @@ export class ClientsService {
                 filter(Boolean),
                 map(clients => clients.find((client: Client) => client.$key === key))
             );
+    }
+
+    addClient(client: Client) {
+        return this.db.list(`/clients/${this.uid}`).push(client);
+    }
+
+    removeClient(key: string) {
+        return this.db.list(`/clients/${this.uid}`).remove(key);
     }
 
     updateClient(key: string, client: Client) {

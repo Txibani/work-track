@@ -9,7 +9,7 @@
     position: relative;
     font-size: 20px;
 
-    & > div {
+    .day {
         position: absolute;
         right: 5px;
         top: 5px;
@@ -20,6 +20,38 @@
         font-weight: bold;
         font-size: 30px;
         background-color: #f0f0f0;
+    }
+
+    &__tasks {
+        width: 100%;
+        height: 100%;
+        display: block;
+        padding: 10px;
+        position: absolute;
+
+        .circle {
+            display: block;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            position: absolute;
+            left: 5px;
+            bottom: 5px;
+            border-radius: 100%;
+
+            &.confirmed {
+                background-color: green;
+            }
+
+            &.pending {
+                background-color: #d86800;
+            }
+
+            &.past-viewing {
+                background-color: grey;
+            }
+
+        }
     }
 
 }

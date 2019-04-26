@@ -1,79 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+
+import { Observable, Subscription } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'calendar',
     styleUrls: ['calendar.component.scss'],
     template: `
-        <div class="calendar">
-            <div class="calendar-head">
-                <button
-                    class="button"
-                    (click)="viewMonth('prev')"><</button>
-                <p class="main">{{ now | date: 'MMMM yyyy' }}</p>
-                <button
-                    class="button"
-                    (click)="viewMonth('next')">></button>
-            </div>
-            <month-view
-                [now]="now"
-                [monthLength]="monthLength"
-                [showMonth]="showMonth"
-                [getColumn]="getColumn">
-            </month-view>
+        <div *ngIf="clientsViewing$ | async as clientViewings">
+            <calendar-view
+                [clientViewings]="clientViewings">
+            </calendar-view>
         </div>
     `
 })
 
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
-    now: any;
+    clientsViewing$: Observable<Client[]>;
+    subscription: Subscription;
 
-    monthLength = 1;
+    test: any;
 
-    column = [0, 1, 2, 3, 4, 5, 6];
-
-    getColumn: number;
-    todaysMonth: any;
-    showMonth: number;
-
-    constructor() {}
+    constructor(
+        private clientsService: ClientsService
+    ) {}
 
     ngOnInit() {
-        this.now = new Date();
-        this.getMonthLength(this.now.getMonth());
-        this.todaysMonth = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
-        this.getColumn = this.todaysMonth.getDay();
-        this.showMonth = this.now.getMonth();
+        this.subscription = this.clientsService.clients$.subscribe();
+        this.clientsViewing$ = this.clientsService.getViewingClients();
     }
 
-    getMonthLength(month: any) {
-        const longMonths = [0, 2, 4, 6, 7, 9, 11];
-        const shortMonths = [3, 5, 8, 10];
-
-        if (shortMonths.includes(month)) {
-            this.monthLength = 30;
-        } else if (longMonths.includes(month)) {
-            this.monthLength = 31;
-        } else {
-            this.monthLength = 28;
-        }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
-
-    viewMonth(flag: string) {
-        if (this.monthLength === 30 && this.now.getMonth() !== 0) {
-            this.monthLength = 31;
-        } else if (this.monthLength === 31 && this.now.getMonth() !== 0) {
-            this.monthLength = 30;
-        }
-        const flagMove = flag === 'next' ? 1 : -1;
-
-        const nextMonth = new Date(this.now.getFullYear(), this.now.getMonth() + flagMove, 1);
-        this.getColumn = nextMonth.getDay();
-
-        this.now = new Date(this.now.setMonth(this.now.getMonth() + flagMove));
-        this.showMonth = this.now.getMonth();
-
-    }
-
 }
