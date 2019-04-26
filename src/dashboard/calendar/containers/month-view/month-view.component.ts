@@ -16,7 +16,9 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
                         [col]="i"
                         [monthLength]="monthLength"
                         [nowsCol]="now | date: 'W'"
-                        [dayNum]="now | date: 'd'">
+                        [dayNum]="now | date: 'd'"
+                        [getColumn]="getColumn - 1"
+                        [showMonth]="showMonth">
                     </day-view>
                 </div>
 
@@ -34,13 +36,21 @@ export class MonthViewComponent implements OnInit, OnChanges {
     @Input()
     monthLength: number;
 
+    @Input()
+    getColumn: number;
+
+    @Input()
+    showMonth: number;
+
     weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+    showFirstDay = true;
 
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if (this.now) {
-            console.log('noww', this.now);
+        if (this.getColumn) {
+            // console.log(this.getColumn);
         }
     }
 

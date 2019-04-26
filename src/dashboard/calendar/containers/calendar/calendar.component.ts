@@ -17,7 +17,10 @@ import { Component, OnInit } from '@angular/core';
             </div>
             <month-view
                 [now]="now"
-                [monthLength]="monthLength"></month-view>
+                [monthLength]="monthLength"
+                [showMonth]="showMonth"
+                [getColumn]="getColumn">
+            </month-view>
         </div>
     `
 })
@@ -28,11 +31,20 @@ export class CalendarComponent implements OnInit {
 
     monthLength = 1;
 
+    column = [0, 1, 2, 3, 4, 5, 6];
+
+    getColumn: number;
+    todaysMonth: any;
+    showMonth: number;
+
     constructor() {}
 
     ngOnInit() {
         this.now = new Date();
         this.getMonthLength(this.now.getMonth());
+        this.todaysMonth = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
+        this.getColumn = this.todaysMonth.getDay();
+        this.showMonth = this.now.getMonth();
     }
 
     getMonthLength(month: any) {
@@ -55,7 +67,13 @@ export class CalendarComponent implements OnInit {
             this.monthLength = 30;
         }
         const flagMove = flag === 'next' ? 1 : -1;
+
+        const nextMonth = new Date(this.now.getFullYear(), this.now.getMonth() + flagMove, 1);
+        this.getColumn = nextMonth.getDay();
+
         this.now = new Date(this.now.setMonth(this.now.getMonth() + flagMove));
+        this.showMonth = this.now.getMonth();
+
     }
 
 }
