@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+import { Client } from '../../../shared/services/clients/clients.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -28,7 +28,7 @@ import { ClientsService, Client } from '../../../shared/services/clients/clients
     `
 })
 
-export class CalendarViewComponent implements OnInit, OnChanges {
+export class CalendarViewComponent implements OnInit {
 
     @Input()
     clientViewings: Client[];
@@ -46,13 +46,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
     clients: any;
 
     constructor() {}
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.clientViewings) {
-            // console.log('clientViewings', this.clientViewings);
-            // Get client payload right
-        }
-    }
 
     ngOnInit() {
         this.now = new Date();

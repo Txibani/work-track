@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+import { Client } from '../../../shared/services/clients/clients.service';
 
 @Component({
     selector: 'day-view',
@@ -17,22 +17,23 @@ import { ClientsService, Client } from '../../../shared/services/clients/clients
                     showCorrect(row, col)">
                     {{ this.row *7 + this.col + 1 - getColumn }}
                 </div>
-                <div *ngIf="clientViewings.length > 0" class="day-view__tasks">
-                    <span
-                        class="circle"
-                        ></span>
+                <div *ngIf="clientViewings.length > 0" class="wrap">
+                    <app-view
+                        [day]="this.row *7 + this.col + 1 - getColumn"
+                        [showMonth]="showMonth"
+                        [clientViewings]="clientViewings"></app-view>
                 </div>
         </div>
     `
 })
 
-export class DayViewComponent implements OnChanges {
+export class DayViewComponent {
 
     @Input()
     col: number;
 
     @Input()
-    dayNum: number;
+    dayNum: number; // current day
 
     @Input()
     monthLength: number;
@@ -52,19 +53,10 @@ export class DayViewComponent implements OnChanges {
 
     today = new Date().getMonth();
 
-    constructor() {}
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.clientViewings) {
-            console.log('clientViewings', this.clientViewings);
-            console.log(this.clientViewings.length);
-            // Get client payload right
-        }
-    }
-
     showCorrect(row, col) {
         return (
             (row === 0 && col < this.getColumn) ? false : true
         );
     }
+
 }

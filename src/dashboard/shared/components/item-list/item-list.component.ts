@@ -15,8 +15,8 @@ import { Client } from '../../services/clients/clients.service';
                         [ngClass]="{
                             'confirmed': item.type === 'booking',
                             'pending': item.type === 'viewing',
-                            'past-viewing': (item.dateViewing && item.dateViewing < today)
-                                || ( item.dateUntil && item.dateUntil < today)
+                            'past-viewing': (item.dateViewing && item.dateViewing <= today)
+                                || ( item.dateUntil && item.dateUntil <= today)
                         }">
                         <b
                             *ngIf="item.dateViewing">
