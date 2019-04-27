@@ -7,17 +7,22 @@ import { Client } from '../../../shared/services/clients/clients.service';
     styleUrls: ['app-view.component.scss'],
     template: `
         <div class="app-view">
-            <ul *ngIf="showClients?.length > 0">
-                <li *ngFor="let client of showClients"
+            <ul *ngIf="showViewingsClients?.length > 0">
+                <li *ngFor="let client of showViewingsClients"
                     [ngClass]="{
-                        'confirmed': client.type === 'booking',
                         'pending': client.type === 'viewing',
-                        'past-viewing': (client.dateViewing && client.dateViewing <= today)
-                            || ( client.dateUntil && client.dateUntil <= today)
+                        'past-viewing': client.dateViewing && client.dateViewing <= today
                     }">
                     <span>{{ client.name }}</span>
                 </li>
             </ul>
+            <div *ngIf="showBookingClients?.length > 0" class="booking-wrap">
+                <div *ngFor="let client of showBookingClients"
+                    [ngClass]="{
+                        'confirmed': client.type === 'booking'
+                    }">
+                </div>
+            </div>
         </div>
 
     `
@@ -34,26 +39,45 @@ export class AppViewComponent implements OnChanges {
     @Input()
     day: any;
 
-    showClients: Client[] = [];
-
+    showViewingsClients: Client[] = [];
+    showBookingClients = [];
     today = new Date();
 
     ngOnChanges(changes: SimpleChanges) {
         if (this.showMonth || this.day || this.clientViewings) {
-            this.showClients = [];
+            this.showViewingsClients = [];
+            this.showBookingClients = [];
             this.showPoints(this.clientViewings, this.showMonth, this.day);
         }
     }
 
     showPoints(clients, month, day) {
+        // TODO - REFACTOR sigh....
         if (clients.length > 0) {
             clients.forEach(client => {
-                if (new Date(client.dateViewing).getMonth() === month &&
+                if (client.type === 'viewing' && new Date(client.dateViewing).getMonth() === month &&
                     day === new Date(client.dateViewing).getDate()) {
-                        this.showClients.push(client);
+                    this.showViewingsClients.push(client);
+                } else if (client.type === 'booking') {
+                    const bookingDays = [];
+                    const amountDays = new Date(client.dateUntil - client.dateFrom).getDate();
+                    for (let i = 0; i < amountDays; i++) {
+                        bookingDays.push({
+                            type: 'booking',
+                            name: client.name,
+                            date: new Date(client.dateFrom).setDate(new Date(client.dateFrom).getDate() + i)
+                        });
                     }
-            });
 
+                    bookingDays.forEach(booking => {
+                        if (new Date(booking.date).getMonth() === month &&
+                        day === new Date(booking.date).getDate()) {
+                            this.showBookingClients.push(booking);
+                        }
+                    });
+
+                }
+            });
         }
     }
 

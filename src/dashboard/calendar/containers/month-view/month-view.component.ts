@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+import { Client } from '../../../shared/services/clients/clients.service';
 
 @Component({
     selector: 'month-view',
@@ -26,7 +26,7 @@ import { ClientsService, Client } from '../../../shared/services/clients/clients
     `
 })
 
-export class MonthViewComponent implements OnInit, OnChanges {
+export class MonthViewComponent {
 
     @Input()
     now: Date;
@@ -47,11 +47,4 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     showFirstDay = true;
 
-    constructor() {}
-
-    ngOnChanges(changes: SimpleChanges) {
-    }
-
-    ngOnInit() {
-    }
 }
