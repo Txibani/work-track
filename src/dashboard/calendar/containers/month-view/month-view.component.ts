@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Client } from '../../../shared/services/clients/clients.service';
 
@@ -18,7 +18,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
                         [dayNum]="now | date: 'd'"
                         [getColumn]="getColumn - 1"
                         [showMonth]="showMonth"
-                        [clientViewings]="clientViewings">
+                        [clientViewings]="clientViewings"
+                        (selectedDay)="selectedDay($event)">
                     </day-view>
                 </div>
             </div>
@@ -43,8 +44,15 @@ export class MonthViewComponent {
     @Input()
     clientViewings: Client[];
 
+    @Output()
+    selectedUserDay = new EventEmitter<any>();
+
     weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     showFirstDay = true;
+
+    selectedDay(event) {
+        this.selectedUserDay.emit(event);
+    }
 
 }

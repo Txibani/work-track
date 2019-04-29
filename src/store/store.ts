@@ -13,11 +13,13 @@ export interface State {
     user: User;
     clients: Client[];
     [key: string]: any;
+    date: Date;
 }
 
 const state: State = {
     user: undefined,
-    clients: undefined
+    clients: undefined,
+    date: undefined
 };
 
 

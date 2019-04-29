@@ -10,6 +10,7 @@ import { DayViewComponent } from './containers/day-view/day-view.component';
 
 // components
 import { AppViewComponent } from './components/app-view/app-view.component';
+import { ClientsViewComponent } from './components/clients-view/clients-view.component';
 
 export const ROUTES: Routes = [
     { path: '', component: CalendarComponent }
@@ -25,7 +26,8 @@ export const ROUTES: Routes = [
         CalendarViewComponent,
         MonthViewComponent,
         DayViewComponent,
-        AppViewComponent
+        AppViewComponent,
+        ClientsViewComponent
     ]
 })
 export class CalendarModule {}

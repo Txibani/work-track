@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Client } from '../../../shared/services/clients/clients.service';
 
@@ -22,7 +22,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
                 [monthLength]="monthLength"
                 [showMonth]="showMonth"
                 [getColumn]="getColumn"
-                [clientViewings]="clientViewings">
+                [clientViewings]="clientViewings"
+                (selectedUserDay)="selectedDayByUser($event)">
             </month-view>
         </div>
     `
@@ -32,6 +33,9 @@ export class CalendarViewComponent implements OnInit {
 
     @Input()
     clientViewings: Client[];
+
+    @Output()
+    selectedDay = new EventEmitter<any>();
 
     now: any;
 
@@ -53,6 +57,10 @@ export class CalendarViewComponent implements OnInit {
         this.todaysMonth = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
         this.getColumn = this.todaysMonth.getDay();
         this.showMonth = this.now.getMonth();
+    }
+
+    selectedDayByUser(event) {
+        this.selectedDay.emit(event);
     }
 
     getMonthLength(month: any) {

@@ -14,8 +14,13 @@ import { map, filter } from 'rxjs/operators';
     template: `
         <div *ngIf="clientsViewing$ | async as clientViewings">
             <calendar-view
-                [clientViewings]="clientViewings">
+                [clientViewings]="clientViewings"
+                (selectedDay)="selectedDayByUser($event)">
             </calendar-view>
+            <clients-view
+                *ngIf="open"
+                (close)="closeModal($event)">
+            </clients-view>
         </div>
     `
 })
@@ -25,7 +30,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     clientsViewing$: Observable<Client[]>;
     subscription: Subscription;
 
-    test: any;
+    open = false;
 
     constructor(
         private clientsService: ClientsService,
@@ -40,5 +45,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    selectedDayByUser(data) {
+        this.open = true;
+        console.log(event);
+        const selectedDate = new Date(2019, data.month, data.day).getTime();
+        console.log
+    }
+
+    closeModal(event) {
+        this.open = event;
     }
 }

@@ -1,9 +1,10 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { Client } from '../../../shared/services/clients/clients.service';
 
 @Component ({
     selector: 'app-view',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['app-view.component.scss'],
     template: `
         <div class="app-view">
@@ -16,13 +17,13 @@ import { Client } from '../../../shared/services/clients/clients.service';
                     <span>{{ client.name }}</span>
                 </li>
             </ul>
-            <div *ngIf="showBookingClients?.length > 0" class="booking-wrap">
-                <div *ngFor="let client of showBookingClients"
-                    [ngClass]="{
-                        'confirmed': client.type === 'booking'
-                    }">
-                </div>
-            </div>
+            <ul *ngIf="showBookingClients?.length > 0" class="booking-wrap">
+                <li *ngFor="let client of showBookingClients; index as i"
+                    [ngClass]="[client.type === 'booking' ? 'confirmed-'+ i : '']">
+                    <div class="back"></div>
+                    <span>{{ showBookingClients[i].name }}</span>
+                </li>
+            </ul>
         </div>
 
     `
@@ -75,7 +76,6 @@ export class AppViewComponent implements OnChanges {
                             this.showBookingClients.push(booking);
                         }
                     });
-
                 }
             });
         }

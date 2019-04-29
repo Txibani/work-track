@@ -11,7 +11,7 @@ import { Client } from '../../../shared/services/clients/clients.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['client-form.component.scss'],
     providers: [
-        { provide: MAT_DATE_LOCALE, useValue: 'fr' },
+        { provide: MAT_DATE_LOCALE, useValue: 'es' },
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     ],
@@ -218,10 +218,11 @@ export class ClientFormComponent implements OnChanges {
     }
 
     updateDateValue() {
+        // TODO - Breaks when date updated
         const controlTime = ['dateViewing', 'dateFrom', 'dateUntil'];
 
         controlTime.forEach(control => {
-            if (this.form.controls[control].value._d) {
+            if (this.form.controls[control].touched && this.form.controls[control].value._d) {
                 const time = this.form.controls[control].value._d.getTime();
                 this.form.controls[control].setValue(time);
             }

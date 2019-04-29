@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Client } from '../../../shared/services/clients/clients.service';
 
@@ -9,7 +9,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
         <div
             class="day-view"
             *ngFor="let row of rows;"
-            [class.active]="dayNum == (row *7 + col + 1) && showMonth === today">
+            [class.active]="dayNum == (row *7 + col + 1) && showMonth === today"
+            (click)="openDay(this.row *7 + this.col + 1 - getColumn, showMonth)">
                 <div
                     class="day"
                     *ngIf="
@@ -47,6 +48,9 @@ export class DayViewComponent {
     @Input()
     clientViewings: Client[];
 
+    @Output()
+    selectedDay = new EventEmitter<any>();
+
     show = true;
 
     rows = Array.from(Array(5).keys()); // [0, 1, 2, 3, 4, 5]
@@ -57,6 +61,10 @@ export class DayViewComponent {
         return (
             (row === 0 && col < this.getColumn) ? false : true
         );
+    }
+
+    openDay(day, month) {
+        this.selectedDay.emit({day, month});
     }
 
 }
