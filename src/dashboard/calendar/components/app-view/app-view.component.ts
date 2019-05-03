@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 import { Client } from '../../../shared/services/clients/clients.service';
 
@@ -17,7 +17,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
                     <span>{{ client.name }}</span>
                 </li>
             </ul>
-            <ul *ngIf="showBookingClients?.length > 0" class="booking-wrap">
+            <ul *ngIf="showBookingClients?.length > 0" class="booking-wrap"
+                (click)="getSelectedDayAndClient(showBookingClients)">
                 <li *ngFor="let client of showBookingClients; index as i"
                     [ngClass]="[client.type === 'booking' ? 'confirmed-'+ i : '']">
                     <div class="back"></div>
@@ -39,6 +40,9 @@ export class AppViewComponent implements OnChanges {
 
     @Input()
     day: any;
+
+    @Output()
+    selectedDay = new EventEmitter<any>();
 
     showViewingsClients: Client[] = [];
     showBookingClients = [];
@@ -66,7 +70,8 @@ export class AppViewComponent implements OnChanges {
                         bookingDays.push({
                             type: 'booking',
                             name: client.name,
-                            date: new Date(client.dateFrom).setDate(new Date(client.dateFrom).getDate() + i)
+                            date: new Date(client.dateFrom).setDate(new Date(client.dateFrom).getDate() + i), 
+                            key: client.$key
                         });
                     }
 
@@ -79,6 +84,10 @@ export class AppViewComponent implements OnChanges {
                 }
             });
         }
+    }
+
+    getSelectedDayAndClient(clients) {
+        this.selectedDay.emit(clients);
     }
 
 }

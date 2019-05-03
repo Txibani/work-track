@@ -1,7 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+
+import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+
 
 @Component({
     selector: 'clients-view',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['clients-view.component.scss'],
     template: `
         <div class="clients-view">
@@ -18,22 +22,33 @@ import { Component, Output, EventEmitter } from '@angular/core';
                     </a>
                 </div>
 
-                <!--<div class="schedule-assign__list">
+                <div class="clients-view__list">
+                    <p *ngIf="clientsData?.length">
+                        {{ clientsData[0].date | date }}
+                    </p>
+
                     <span
                         class="schedule-assign__empty"
-                        *ngIf="!list?.length">
-                        <img src="/img/face.svg">
-                        Nothing here to assign
+                        *ngIf="!clientsData?.length">
+                        Nothing today
                     </span>
                     <div
-                        *ngFor="let item of list"
-                        [class.active]="exists(item.name)"
+                        class="client-view"
+                        *ngFor="let item of clientsData"
                         (click)="toggleItem(item.name)">
-                        {{ item.name }}
+                            <a routerLink="dashboard/clients/{{item.key}}">
+                                {{ item.name }}
+                            </a>
+                            <span class="client-view__date">
+                                May 3, 2019 - May 5, 2019
+                            </span>
+                            <span class="client-view__revenue">
+                                25 €
+                            </span>
                     </div>
                 </div>
 
-                <div class="schedule-assign__submit">
+                <!--<div class="schedule-assign__submit">
                     <div>
                         <button
                             type="button"
@@ -55,10 +70,19 @@ import { Component, Output, EventEmitter } from '@angular/core';
     `
 })
 
-export class ClientsViewComponent {
+export class ClientsViewComponent implements OnChanges {
+
+    @Input()
+    clientsData: Client[];
 
     @Output()
     close = new EventEmitter<boolean>();
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.clientsData.length) {
+            console.log('aa', this.clientsData);
+        }
+    }
 
     closeModal() {
         this.close.emit(false);

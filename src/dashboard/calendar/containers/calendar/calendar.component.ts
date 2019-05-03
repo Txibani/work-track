@@ -19,6 +19,7 @@ import { map, filter } from 'rxjs/operators';
             </calendar-view>
             <clients-view
                 *ngIf="open"
+                [clientsData]="clientsData"
                 (close)="closeModal($event)">
             </clients-view>
         </div>
@@ -31,6 +32,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     subscription: Subscription;
 
     open = false;
+
+    clientsData: Client[] = [];
 
     constructor(
         private clientsService: ClientsService,
@@ -49,9 +52,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     selectedDayByUser(data) {
         this.open = true;
-        console.log(event);
-        const selectedDate = new Date(2019, data.month, data.day).getTime();
-        console.log
+        this.clientsData = data;
+        console.log(data);
     }
 
     closeModal(event) {

@@ -9,8 +9,7 @@ import { Client } from '../../../shared/services/clients/clients.service';
         <div
             class="day-view"
             *ngFor="let row of rows;"
-            [class.active]="dayNum == (row *7 + col + 1) && showMonth === today"
-            (click)="openDay(this.row *7 + this.col + 1 - getColumn, showMonth)">
+            [class.active]="dayNum == (this.row *7 + this.col + 1 - getColumn) && showMonth === today">
                 <div
                     class="day"
                     *ngIf="
@@ -22,7 +21,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
                     <app-view
                         [day]="this.row *7 + this.col + 1 - getColumn"
                         [showMonth]="showMonth"
-                        [clientViewings]="clientViewings"></app-view>
+                        [clientViewings]="clientViewings"
+                        (selectedDay)="getSelectedDayData($event)"></app-view>
                 </div>
         </div>
     `
@@ -63,8 +63,8 @@ export class DayViewComponent {
         );
     }
 
-    openDay(day, month) {
-        this.selectedDay.emit({day, month});
+    getSelectedDayData(event) {
+        this.selectedDay.emit(event);
     }
 
 }

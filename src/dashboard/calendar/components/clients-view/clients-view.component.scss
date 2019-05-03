@@ -59,25 +59,36 @@
         }
     }
     &__list {
-        margin: 30px;
-        border-radius: 3px;
-        border: 1px solid #c1cedb;
-        height: 140px;
-        overflow-y: scroll;
-        div {
-            cursor: pointer;
-            padding: 8px 10px 8px 35px;
-            transition: all .2s ease-in-out;
-            background: url(/img/check.svg) no-repeat 8px 9px;
-            background-size: 20px 20px;
-            border-bottom: 1px solid #d1deeb;
-            &.active {
-                background-image: url(/img/check-active.svg);
-            }
-            &:last-child {
-                border-bottom: 0;
-            }
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+
+        p {
+            text-align: center;
+            margin: 0;
+            font-style: italic;
         }
+        
+        .client-view {
+            display: flex;
+            padding: 1em 0;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            border-bottom: solid 1px #545e6f;
+
+            a {
+                color: inherit;
+            }
+
+            &__date {
+                font-size: 12px;
+                color: #8ea6bd;
+                padding: 5px 0;
+            }
+
+        }
+        
     }
     &__submit {
         display: flex;
