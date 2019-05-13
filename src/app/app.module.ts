@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { Store } from '../store/store';
 
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [];
         BrowserModule,
         AuthModule,
         DashboardModule,
-        RouterModule.forRoot(ROUTES),
+        RouterModule.forRoot(ROUTES, { preloadingStrategy: PreloadAllModules }),
         BrowserAnimationsModule
     ],
     declarations: [

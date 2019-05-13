@@ -14,10 +14,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
                 routerLinkActive="active">
                 Clients
             </a>
-            <a routerLink="dashboard/revenue"
-                routerLinkActive="active">
-                Revenue
-            </a>
         </div>
     `
 })

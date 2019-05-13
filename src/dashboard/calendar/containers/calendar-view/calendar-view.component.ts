@@ -55,7 +55,9 @@ export class CalendarViewComponent implements OnInit {
         this.now = new Date();
         this.getMonthLength(this.now.getMonth());
         this.todaysMonth = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
+        console.log(this.todaysMonth);
         this.getColumn = this.todaysMonth.getDay();
+        console.log('getColumn', this.getColumn);
         this.showMonth = this.now.getMonth();
     }
 
@@ -77,19 +79,14 @@ export class CalendarViewComponent implements OnInit {
     }
 
     viewMonth(flag: string) {
-        if (this.monthLength === 30 && this.now.getMonth() !== 0) {
-            this.monthLength = 31;
-        } else if (this.monthLength === 31 && this.now.getMonth() !== 0) {
-            this.monthLength = 30;
-        }
         const flagMove = flag === 'next' ? 1 : -1;
-
         const nextMonth = new Date(this.now.getFullYear(), this.now.getMonth() + flagMove, 1);
+
+        this.monthLength = new Date(nextMonth.getFullYear(), nextMonth.getMonth() + 1, 0).getDate();
         this.getColumn = nextMonth.getDay();
 
         this.now = new Date(this.now.setMonth(this.now.getMonth() + flagMove));
         this.showMonth = this.now.getMonth();
-
     }
 
 }

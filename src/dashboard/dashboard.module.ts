@@ -24,10 +24,6 @@ export const ROUTES: Routes = [{
         {
             path: 'clients',
             loadChildren: './clients/clients.module#ClientsModule' // this will lazy load by default
-        },
-        {
-            path: 'revenue',
-            loadChildren: './revenue/revenue.module#RevenueModule' // this will lazy load by default
         }
     ]
 }];

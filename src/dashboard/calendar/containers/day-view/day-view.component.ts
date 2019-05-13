@@ -53,11 +53,18 @@ export class DayViewComponent {
 
     show = true;
 
-    rows = Array.from(Array(5).keys()); // [0, 1, 2, 3, 4, 5]
+    rows = Array.from(Array(6).keys()); // [0, 1, 2, 3, 4, 5, 6]
 
     today = new Date().getMonth();
 
     showCorrect(row, col) {
+        if (row === 0) {
+        console.log('row', row);
+        console.log('col', col);
+        console.log('this.getColumn', this.getColumn);
+        console.log('col < this.getColumn', col < this.getColumn);
+        }
+
         return (
             (row === 0 && col < this.getColumn) ? false : true
         );
