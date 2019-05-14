@@ -62,8 +62,6 @@ export class ClientsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.subscription = this.clientsService.clients$.subscribe();
         this.clients$ = this.store.select<Client[]>('clients');
-        console.log(this.clients$);
-        console.log(this.subscription);
     }
 
     ngOnDestroy() {

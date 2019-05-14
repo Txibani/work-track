@@ -58,16 +58,7 @@ export class DayViewComponent {
     today = new Date().getMonth();
 
     showCorrect(row, col) {
-        if (row === 0) {
-        console.log('row', row);
-        console.log('col', col);
-        console.log('this.getColumn', this.getColumn);
-        console.log('col < this.getColumn', col < this.getColumn);
-        }
-
-        return (
-            (row === 0 && col < this.getColumn) ? false : true
-        );
+        return row === 0 && col < this.getColumn ? false : true;
     }
 
     getSelectedDayData(event) {

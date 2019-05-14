@@ -70,7 +70,8 @@ export class AppViewComponent implements OnChanges {
                         bookingDays.push({
                             type: 'booking',
                             name: client.name,
-                            date: new Date(client.dateFrom).setDate(new Date(client.dateFrom).getDate() + i), 
+                            date: new Date(client.dateFrom).setDate(new Date(client.dateFrom).getDate() + i),
+                            totalDays: new Date(client.dateUntil - client.dateFrom).getDate(),
                             key: client.$key
                         });
                     }

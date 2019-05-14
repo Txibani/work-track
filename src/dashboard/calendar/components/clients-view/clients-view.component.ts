@@ -1,6 +1,6 @@
-import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
 
-import { ClientsService, Client } from '../../../shared/services/clients/clients.service';
+import { Client } from '../../../shared/services/clients/clients.service';
 
 
 @Component({
@@ -34,55 +34,31 @@ import { ClientsService, Client } from '../../../shared/services/clients/clients
                     </span>
                     <div
                         class="client-view"
-                        *ngFor="let item of clientsData"
-                        (click)="toggleItem(item.name)">
+                        *ngFor="let item of clientsData">
                             <a routerLink="dashboard/clients/{{item.key}}">
                                 {{ item.name }}
                             </a>
                             <span class="client-view__date">
-                                May 3, 2019 - May 5, 2019
+                                Total {{ item.totalDays }} days
                             </span>
                             <span class="client-view__revenue">
-                                25 €
+                                {{ item.totalDays === 1 ? 12 : item.totalDays * 15 }}
                             </span>
                     </div>
                 </div>
-
-                <!--<div class="schedule-assign__submit">
-                    <div>
-                        <button
-                            type="button"
-                            class="button"
-                            (click)="updateAssign()">
-                            Update
-                        </button>
-                        <button
-                            type="button"
-                            class="button button--cancel"
-                            (click)="cancelAssign()">
-                            Cancel
-                        </button>
-                    </div>
-                </div>-->
 
             </div>
         </div>
     `
 })
 
-export class ClientsViewComponent implements OnChanges {
+export class ClientsViewComponent {
 
     @Input()
     clientsData: Client[];
 
     @Output()
     close = new EventEmitter<boolean>();
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.clientsData.length) {
-            console.log('aa', this.clientsData);
-        }
-    }
 
     closeModal() {
         this.close.emit(false);

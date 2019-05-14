@@ -53,7 +53,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     selectedDayByUser(data) {
         this.open = true;
         this.clientsData = data;
-        console.log(data);
     }
 
     closeModal(event) {

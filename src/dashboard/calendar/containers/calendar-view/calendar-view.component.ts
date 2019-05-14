@@ -55,9 +55,7 @@ export class CalendarViewComponent implements OnInit {
         this.now = new Date();
         this.getMonthLength(this.now.getMonth());
         this.todaysMonth = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
-        console.log(this.todaysMonth);
         this.getColumn = this.todaysMonth.getDay();
-        console.log('getColumn', this.getColumn);
         this.showMonth = this.now.getMonth();
     }
 

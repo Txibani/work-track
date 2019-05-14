@@ -10,7 +10,8 @@ import { Client } from '../../../shared/services/clients/clients.service';
             <div class="mont-view__week">
                 <div class="view" *ngFor="let day of weekDays; index as i">
                     <div class="view-head">
-                        {{ day }}
+                        <span class="show-for-large">{{ day.large }}</span>
+                        <span class="show-for-small">{{ day.short }}</span>
                     </div>
                     <day-view
                         [col]="i"
@@ -47,7 +48,15 @@ export class MonthViewComponent {
     @Output()
     selectedUserDay = new EventEmitter<any>();
 
-    weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    weekDays = [
+        {large: 'Monday', short: 'M'},
+        {large: 'Tuesday', short: 'T'},
+        {large: 'Wednesday', short: 'W'},
+        {large: 'Thursday', short: 'T'},
+        {large: 'Friday', short: 'F'},
+        {large: 'Saturday', short: 'S'},
+        {large: 'Sunday', short: 'S'}
+    ];
 
     showFirstDay = true;
 
